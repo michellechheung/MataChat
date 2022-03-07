@@ -14,5 +14,5 @@ MataChat will be a sleak, modern, and intuitive messaging platform exclusively t
 |[Kevin Orellana](https://github.com/korellana89)| Software Developer  
 |[Kyle DeGuzman](https://github.com/kyledeguzmanx)| Software Developer  
 |[Michelle Chheung](https://github.com/cakepopkid)| Software Developer  
-|[Pin-Chun Liu]()| Software Developer 
+|[Pin-Chun Liu](https://github.com/liu753951)| Software Developer 
 |[Sebastian Salazar](https://github.com/sebastians1994)| Software Developer  
