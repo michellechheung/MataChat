@@ -1,6 +1,6 @@
 
 import {useState, useEffect } from "react";
-import {db} from "./firebase-config";
+import {db, auth} from "./firebase-config";
 import {collection, getDocs} from "firebase/firestore";
 
 function App(){
@@ -10,3 +10,5 @@ function App(){
     <h1> Hello World </h1>
   );
 }
+
+export default App;
