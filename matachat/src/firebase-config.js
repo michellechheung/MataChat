@@ -3,7 +3,7 @@ import { initializeApp } from "firebase/app";
 import {getFirestore} from "@firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: API_KEY,
+  apiKey: key,
   authDomain: "matachat-7ecf2.firebaseapp.com",
   projectId: "matachat-7ecf2",
   storageBucket: "matachat-7ecf2.appspot.com",
