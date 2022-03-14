@@ -1,10 +1,10 @@
-var key = config.API_KEY; // pulls API key from src/congig.js
+import {config} from "./config"; // pulls API key from src/congig.js
 import { initializeApp } from "firebase/app"; 
 import { getAuth} from "firebase/auth"
 import {getFirestore} from "@firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: key,
+  apiKey: config.API_KEY,
   authDomain: "matachat-7ecf2.firebaseapp.com",
   projectId: "matachat-7ecf2",
   storageBucket: "matachat-7ecf2.appspot.com",
