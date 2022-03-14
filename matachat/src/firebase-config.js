@@ -1,8 +1,9 @@
+var key = config.API_KEY;
 import { initializeApp } from "firebase/app";
 import {getFirestore} from "@firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "------------INSERT HERE FROM ENV FILE--------------------------",
+  apiKey: API_KEY,
   authDomain: "matachat-7ecf2.firebaseapp.com",
   projectId: "matachat-7ecf2",
   storageBucket: "matachat-7ecf2.appspot.com",
