@@ -1,5 +1,6 @@
-var key = config.API_KEY;
-import { initializeApp } from "firebase/app";
+var key = config.API_KEY; // pulls API key from src/congig.js
+import { initializeApp } from "firebase/app"; 
+import { getAuth} from "firebase/auth"
 import {getFirestore} from "@firebase/firestore";
 
 const firebaseConfig = {
@@ -12,4 +13,5 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app)
+export const auth = getAuth(app);
+export const db = getFirestore(app);
