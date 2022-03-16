@@ -2,12 +2,15 @@
 import {useState, useEffect } from "react";
 import {db, auth} from "./firebase-config";
 import {collection, getDocs} from "firebase/firestore";
+import Login from './components/Login'
+import Register from './components/Register'
 
 function App(){
   
   
   return (
-    <h1> Hello World </h1>
+    //<Login/>  /*ONLT VIEW ONE AT A TIME */
+    <Register/>
   );
 }
 
