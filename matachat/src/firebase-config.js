@@ -1,5 +1,8 @@
 import { initializeApp } from "firebase/app"; 
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth"
+import { getAuth, //for authentication
+  createUserWithEmailAndPassword, //for creating users
+  deleteUser
+} from "firebase/auth"
 import {getFirestore} from "@firebase/firestore";
 import config from "./config";
 var key = config.API_KEY; // pulls API key from src/congig.js
@@ -16,7 +19,9 @@ const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 
-const registerUser = async (name, email, password) => {
+//------------------------------------REGISTER USER ------------------------------------
+// password must be 6 characters+ , must be valid CSUN EMAIL
+const adminRegisterUser = async (name, email, password) => {
   try {
     if(email.trim().endsWith("csun.edu")){
       const response = await createUserWithEmailAndPassword(auth, email.trim(), password);
@@ -54,12 +59,33 @@ const registerUser = async (name, email, password) => {
 };
 
 
-//TEST FUNCTION
+//TEST FUNCTION CALL FOR EMAIL
+/*
 var name = "kyle";
 var email = "testFromReact@ucla.edu";
 var password = "passssss"; 
-registerUser(name, email, password);
-
-  
+adminRegisterUser(name, email, password);*/
 
 
+//------------------------------------DELETE CURRENT USER------------------------------------
+const adminDeleteUser = () => {
+  deleteUser(auth.currentUser)
+    .then(() => {
+      console.log("Deletion Success");
+    })
+    .catch((error) => {
+      console.error(error.message);
+    })
+};
+
+
+
+
+
+
+/*NOTES
+
+ERROR CODES https://firebase.google.com/docs/auth/admin/errors
+List methods https://firebase.google.com/docs/reference/js/v8/firebase.auth.Auth#createuserwithemailandpassword 
+
+*/
