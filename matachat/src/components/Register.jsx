@@ -1,13 +1,22 @@
+/*
+https://firebase.google.com/docs/auth/web/email-link-auth
+https://firebase.google.com/docs/reference/js/v8/firebase.auth.Auth#createuserwithemailandpassword
+*/
 import React, { useState, useEffect } from 'react';
 
-function Register(){
+function Register(props){
     const [fName, setFName] = useState("");
     const [lName, setLName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    let validCredentials = true;
 
-    const GoSignUp = async() => { //confirm if its good
-        //test sign up and sign up
+
+    
+
+    const registerEmailAndPassword = async() => { //confirm if its good
+       
+       
     };
     return(
         <section className="register-container">
@@ -21,7 +30,7 @@ function Register(){
                 <input type="text" placeholder='johndoe@john.com' onChange={(event) => {setEmail(event.target.value)}} required/>
                 <label>Password</label>
                 <input type="text" placeholder='Enter password' onChange={(event) => {setPassword(event.target.value)}} required/>
-                <button onClick={GoSignUp} >Login</button>
+                <button onClick={registerEmailAndPassword} >Login</button>
             </form>
         </section>
     )
