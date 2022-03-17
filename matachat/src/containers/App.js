@@ -4,6 +4,9 @@ import logo from './matachat-logo.png';
 
 import "./App.css";
 
+import { login, logout } from "../login";
+import { auth } from "../firebase-config";
+import { onAuthStateChanged } from "firebase/auth";
 
 function App() {
   // React States
@@ -43,14 +46,34 @@ function App() {
     pass: "invalid password"
   };
  
-  
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      console.log(user.email + " logged in");
+      setIsSubmitted(true);
+    } else {
+      console.log("User logged out");
+      setIsSubmitted(false);
+    }
+  });
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     //Prevent page reload
     event.preventDefault();
 
     var { uname, pass } = document.forms[0];
 
+    let result = await login(uname.value, pass.value);
+    console.log("result: ", result);
+    if (result == "auth/wrong-password"){
+      // Invalid password
+      setErrorMessages({ name: "pass", message: errors.pass });
+    }
+    else if (result == "auth/invalid-email"){
+      // Username not found
+      setErrorMessages({ name: "uname", message: errors.uname });
+    }
+    
+    /*
     // Find user login info
     const userData = database.find((user) => user.username === uname.value);
 
@@ -66,6 +89,7 @@ function App() {
       // Username not found
       setErrorMessages({ name: "uname", message: errors.uname });
     }
+    */
   };
 
   // Generate JSX code for error message
@@ -99,6 +123,18 @@ function App() {
     </div>
   );
 
+  const handleLogout = (event) => {
+    logout();
+    setErrorMessages({ name: "uname", message: "" });
+    setErrorMessages({ name: "pass", message: "" });
+  };
+  const renderLogout = (
+    <>
+      <div>User is successfully logged in</div>
+      <button onClick={handleLogout}>Logout</button>
+    </>
+  );
+
   return (
     <div className="app">
       <div class="row">
@@ -108,7 +144,7 @@ function App() {
       <div class="column-right">
         <div class="login-form">
         <div className="title">Sign In</div>
-        {isSubmitted ? <div>User is successfully logged in</div> : renderForm}
+        {isSubmitted ? renderLogout : renderForm}
         </div>
       </div>
       </div>

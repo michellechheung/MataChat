@@ -11,6 +11,7 @@ onAuthStateChanged(auth, (user) => {
 });
 
 export async function login(email="matachat.test@my.csun.edu", password="test.login.logout"){
+  let error_code = null;
   signInWithEmailAndPassword(auth, email, password).then((userCredential) => {
     const user = userCredential.user;
     console.log("User logged in successfully");
@@ -18,7 +19,13 @@ export async function login(email="matachat.test@my.csun.edu", password="test.lo
   }).catch((error) => {
     const errorCode = error.code;
     const errorMessage = error.message;
-    console.log("error");
+    console.log("error", errorMessage, errorCode);
+    error_code = errorCode;
+  });
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve(error_code);
+    }, 1000);
   });
 }
 
