@@ -1,9 +1,14 @@
 import { initializeApp } from "firebase/app"; 
 import { getAuth, //for authentication
   createUserWithEmailAndPassword, //for creating users
-  deleteUser
-} from "firebase/auth"
-import {getFirestore} from "@firebase/firestore";
+  deleteUser, // for deleting user
+  signInWithEmailAndPassword,  //for signing in
+  signOut,  //for signing out
+  onAuthStateChanged //for verifying login
+} from "firebase/auth";
+import {getFirestore,collection, getDocs} from "@firebase/firestore";
+
+
 import config from "./config";
 var key = config.API_KEY; // pulls API key from src/congig.js
 
@@ -21,7 +26,7 @@ export const db = getFirestore(app);
 
 //------------------------------------REGISTER USER ------------------------------------
 // password must be 6 characters+ , must be valid CSUN EMAIL
-const adminRegisterUser = async (name, email, password) => {
+export const adminRegisterUser = async (name, email, password) => {
   try {
     if(email.trim().endsWith("csun.edu")){
       const response = await createUserWithEmailAndPassword(auth, email.trim(), password);
@@ -68,7 +73,7 @@ adminRegisterUser(name, email, password);*/
 
 
 //------------------------------------DELETE CURRENT USER------------------------------------
-const adminDeleteUser = () => {
+export const adminDeleteUser = () => {
   deleteUser(auth.currentUser)
     .then(() => {
       console.log("Deletion Success");
@@ -78,7 +83,54 @@ const adminDeleteUser = () => {
     })
 };
 
+//------------------------------------GET LOGIN STATUS------------------------------------
+export const adminGetLoginStatus = () => {
+  const user = auth.currentUser;
+  if (user){
+    console.log(user.email + " is currently logged in");
+  }
+  else{
+    console.log("User is not logged in");
+  }
+}
 
+//------------------------------------LOG OUT------------------------------------
+export const adminLogout = async () => {
+  signOut(auth).then(() => {
+    console.log("User logged out successfully");
+  }).catch((error) => {
+    console.log("error");
+  });
+}
+
+
+//------------------------------------LOG IN------------------------------------
+export const adminLogin = async (email="matachat.test@my.csun.edu", password="test.login.logout") => {
+  let error_code = null;
+  signInWithEmailAndPassword(auth, email, password).then((userCredential) => {
+    const user = userCredential.user;
+    console.log("User logged in successfully");
+    console.log(user);
+  }).catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    console.log("error", errorMessage, errorCode);
+    error_code = errorCode;
+  });
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve(error_code);
+    }, 1000);
+  });
+}
+
+
+/*async function access_users_db(){
+  const querySnapshot = await getDocs(collection(db, "users"));
+  querySnapshot.forEach((doc) => {
+    console.log(`${doc.id} => ${doc.data()}`);
+  });
+}*/
 
 
 
