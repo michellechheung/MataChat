@@ -125,21 +125,20 @@ export const adminLogout = async () => {
 
 //------------------------------------LOG IN------------------------------------
 export const adminLogin = async (email="matachat.test@my.csun.edu", password="test.login.logout") => {
-  let error_code = null;
-  signInWithEmailAndPassword(auth, email, password).then((userCredential) => {
-    const user = userCredential.user;
-    console.log("User logged in successfully");
-    console.log(user);
-  }).catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    console.log("error", errorMessage, errorCode);
-    error_code = errorCode;
-  });
   return new Promise(resolve => {
-    setTimeout(() => {
+    let error_code = null;
+    signInWithEmailAndPassword(auth, email, password).then((userCredential) => {
+      const user = userCredential.user;
+      console.log("User logged in successfully");
+      console.log(user);
+    }).catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log("error", errorMessage, errorCode);
+      error_code = errorCode;
+    }).then(()=>{
       resolve(error_code);
-    }, 1000);
+    });
   });
 }
 

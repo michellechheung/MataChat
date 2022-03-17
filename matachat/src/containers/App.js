@@ -4,8 +4,7 @@ import logo from './matachat-logo.png';
 
 import "./App.css";
 
-import { login, logout } from "../login";
-import { auth } from "../firebase-config";
+import { auth, adminLogin, adminLogout } from "../firebase-config";
 import { onAuthStateChanged } from "firebase/auth";
 
 function App() {
@@ -62,7 +61,7 @@ function App() {
 
     var { uname, pass } = document.forms[0];
 
-    let result = await login(uname.value, pass.value);
+    let result = await adminLogin(uname.value, pass.value);
     console.log("result: ", result);
     if (result == "auth/wrong-password"){
       // Invalid password
@@ -124,7 +123,7 @@ function App() {
   );
 
   const handleLogout = (event) => {
-    logout();
+    adminLogout();
     setErrorMessages({ name: "uname", message: "" });
     setErrorMessages({ name: "pass", message: "" });
   };
