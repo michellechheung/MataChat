@@ -24,6 +24,27 @@ const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 
+
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    console.log(user.email + " logged in");
+  } else {
+    console.log("User logged out");
+  }
+});
+
+/*
+  ------------------------------------FUNCTIONS BELOW INCLUDE:------------------------------------
+
+  adminRegisterUser(name, email, password)
+  adminDeleteUser()
+  adminGetLoginStatus()
+  adminLogout
+  adminLogin
+
+*/
+
+
 //------------------------------------REGISTER USER ------------------------------------
 // password must be 6 characters+ , must be valid CSUN EMAIL
 export const adminRegisterUser = async (name, email, password) => {
@@ -36,8 +57,6 @@ export const adminRegisterUser = async (name, email, password) => {
     else{
       throw new Error ("The provided value for the email user property is invalid. It must be a valid CSUN email address", "auth/invalid-csun");
     }
-    
-    
 
   } catch (error) {
     console.error("new error" + error + " code: " + error.code);
@@ -64,12 +83,12 @@ export const adminRegisterUser = async (name, email, password) => {
 };
 
 
-//TEST FUNCTION CALL FOR EMAIL
-/*
-var name = "kyle";
-var email = "testFromReact@ucla.edu";
-var password = "passssss"; 
-adminRegisterUser(name, email, password);*/
+      //TEST FUNCTION CALL FOR EMAIL
+      /*
+      var name = "kyle";
+      var email = "testFromReact@ucla.edu";
+      var password = "passssss"; 
+      adminRegisterUser(name, email, password);*/
 
 
 //------------------------------------DELETE CURRENT USER------------------------------------
