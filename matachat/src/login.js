@@ -1,3 +1,12 @@
+/*   
+
+
+DEPRECATED. CODE ADDED TO firebase-config.js
+
+
+
+
+*/
 import { db, auth } from "./firebase-config";
 import { collection, getDocs } from "firebase/firestore";
 import { signInWithEmailAndPassword, signOut, onAuthStateChanged } from "firebase/auth"
