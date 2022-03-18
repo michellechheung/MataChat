@@ -11,6 +11,7 @@ function App() {
   // React States
   const [errorMessages, setErrorMessages] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [logoV2, setLogo] = useState("./images/logo-iconUF-transparent.png");
 
   // User Login info
   const database = [
@@ -138,7 +139,7 @@ function App() {
     <div className="app">
       <div class="row">
       <div class="column-left">
-        <img src={logo} className="App-logo" alt="logo"></img>
+        <img src={logoV2} className="App-logo" alt="logo"></img>
       </div>
       <div class="column-right">
         <div class="login-form">
