@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
-import logo from './matachat-logo.png';
+//import logo from './matachat-logo.png';
 
 import "./App.css";
 
