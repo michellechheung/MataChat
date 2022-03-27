@@ -6,7 +6,16 @@ import { getAuth, //for authentication
   signOut,  //for signing out
   onAuthStateChanged //for verifying login
 } from "firebase/auth";
-import {getFirestore,collection, getDocs} from "@firebase/firestore";
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  addDoc,
+  serverTimestamp,
+  query,
+  orderBy,
+  limit
+} from "@firebase/firestore";
 
 
 import config from "./config";
@@ -25,13 +34,13 @@ export const auth = getAuth(app);
 export const db = getFirestore(app);
 
 
-onAuthStateChanged(auth, (user) => {
+/*onAuthStateChanged(auth, (user) => {
   if (user) {
     console.log(user.email + " logged in");
   } else {
     console.log("User logged out");
   }
-});
+});*/
 
 /*
   ------------------------------------FUNCTIONS BELOW INCLUDE:------------------------------------
@@ -143,13 +152,45 @@ export const adminLogin = async (email="matachat.test@my.csun.edu", password="te
 }
 
 
+// Write message to DB
+export async function writeMessageDB(messageText){
+  try {
+    await addDoc(collection(db, "messages"),
+      {
+        name: auth.currentUser.displayName,
+        email: auth.currentUser.email,
+        text: messageText,
+        profilePicUrl: auth.currentUser.photoURL,
+        timestamp: serverTimestamp()
+      }
+    );
+  }
+  catch(error) {
+    console.log(error);
+  }
+}
+
+// Load messages from DB
+export async function loadMessagesDB() {
+    const querySnapshot = await getDocs(query(collection(db, "messages"), orderBy('timestamp', 'desc')));
+    let message_array = Array();
+    querySnapshot.forEach((doc) => {
+      //console.log(`${doc.id} => ${doc.data().email} => ${doc.data().text} (${doc.data().timestamp})`);
+      message_array.push({id: doc.data().id, text: doc.data().text, email: doc.data().email, timestamp: doc.data().timestamp});
+    });
+    return new Promise(resolve => {
+      resolve(message_array);
+    });
+}
+
 /*async function access_users_db(){
   const querySnapshot = await getDocs(collection(db, "users"));
   querySnapshot.forEach((doc) => {
-    console.log(`${doc.id} => ${doc.data()}`);
+    console.log(`${doc.id} => ${doc.data().email}`);
   });
 }*/
 
+export const recentMessagesQuery = query(collection(db, 'messages'), orderBy('timestamp', 'desc'), limit(12));
 
 
 
