@@ -10,7 +10,8 @@ import {
   adminLogout,
   writeMessageDB,
   loadMessagesDB,
-  recentMessagesQuery
+  recentMessagesQuery,
+  listChatRoomsDB
 } from "../firebase-config";
 
 import { onAuthStateChanged } from "firebase/auth";
@@ -21,6 +22,7 @@ function App() {
   const [errorMessages, setErrorMessages] = useState({});
   const [inputMessage, setInputMessage] = useState("");
   const [displayMessage, setDisplayMessage] = useState("");
+  const [listRooms, setListRooms] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [logoV2, setLogo] = useState("./images/logo-iconUF-transparent.png");
 
@@ -62,6 +64,7 @@ function App() {
       if (user) {
         console.log(user.email + " logged in");
         setIsSubmitted(true);
+        handleListRooms();
       } else {
         console.log("User logged out");
         setIsSubmitted(false);
@@ -160,6 +163,16 @@ function App() {
     setDisplayMessage(raw_string);
   }
 
+  // Load and Display Chat Rooms
+  const handleListRooms = async () => {
+    let raw_string = "";
+    let rooms = await listChatRoomsDB();
+    for(let i=0; i<rooms.length; i++){
+      raw_string += `${rooms[i].room_name} \n`;
+    }
+    setListRooms(raw_string);
+  }
+
   // Send Messages to DB
   const handleSendMessage = (event) => {
     writeMessageDB(inputMessage);
@@ -182,6 +195,8 @@ function App() {
       <button onClick={()=>handleSendMessage()}>Send</button>
       <br />
       <label>messages:<br />{displayMessage}</label>
+      <br />
+      <label>rooms:<br />{listRooms}</label>
     </>
   );
 
