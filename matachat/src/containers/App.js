@@ -1,28 +1,20 @@
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 //import logo from './matachat-logo.png';
-
+import TestBackendOnly from "../components/TestBackendOnly";
 import "./App.css";
 
 import {
   auth,
   adminLogin,
-  adminLogout,
-  writeMessageDB,
-  loadMessagesDB,
-  recentMessagesQuery,
-  listChatRoomsDB
+  adminLogout
 } from "../firebase-config";
 
 import { onAuthStateChanged } from "firebase/auth";
-import { onSnapshot } from "@firebase/firestore";
 
 function App() {
   // React States
   const [errorMessages, setErrorMessages] = useState({});
-  const [inputMessage, setInputMessage] = useState("");
-  const [displayMessage, setDisplayMessage] = useState("");
-  const [listRooms, setListRooms] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [logoV2, setLogo] = useState("./images/logo-iconUF-transparent.png");
 
@@ -64,7 +56,6 @@ function App() {
       if (user) {
         console.log(user.email + " logged in");
         setIsSubmitted(true);
-        handleListRooms();
       } else {
         console.log("User logged out");
         setIsSubmitted(false);
@@ -72,12 +63,6 @@ function App() {
     });
   }, [isSubmitted]);
 
-  useEffect(() => {
-    // Start listening to the query
-    onSnapshot(recentMessagesQuery, function() {
-      handleLoadMessage();
-    });
-  }, [displayMessage]);
   
 
   const handleSubmit = async (event) => {
@@ -153,50 +138,12 @@ function App() {
     setErrorMessages({ name: "pass", message: "" });
   };
 
-  // Load and Display Messages
-  const handleLoadMessage = async () => {
-    let raw_string = "";
-    let messages = await loadMessagesDB();
-    for(let i=0; i<messages.length; i++){
-      raw_string += `${messages[i].email}: ${messages[i].text}\n`;
-    }
-    setDisplayMessage(raw_string);
-  }
-
-  // Load and Display Chat Rooms
-  const handleListRooms = async () => {
-    let raw_string = "";
-    let rooms = await listChatRoomsDB();
-    for(let i=0; i<rooms.length; i++){
-      raw_string += `${rooms[i].room_name} \n`;
-    }
-    setListRooms(raw_string);
-  }
-
-  // Send Messages to DB
-  const handleSendMessage = (event) => {
-    writeMessageDB(inputMessage);
-  }
-
-  const handleInputMessageChange = (e) => {
-    const {id , value} = e.target;
-    if(id === "message"){
-        setInputMessage(value);
-    }
-  };
 
   const renderLogout = (
     <>
       <div>User is successfully logged in</div>
       <button onClick={handleLogout}>Logout</button>
-      <br />
-      <label>Message: </label>
-      <input type="text" onChange = {(e) => handleInputMessageChange(e)} id="message" placeholder="Enter message here" />
-      <button onClick={()=>handleSendMessage()}>Send</button>
-      <br />
-      <label>messages:<br />{displayMessage}</label>
-      <br />
-      <label>rooms:<br />{listRooms}</label>
+      <TestBackendOnly />
     </>
   );
 
