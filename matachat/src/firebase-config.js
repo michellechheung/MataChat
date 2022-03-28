@@ -14,7 +14,8 @@ import {
   serverTimestamp,
   query,
   orderBy,
-  limit
+  limit,
+  where
 } from "@firebase/firestore";
 
 
@@ -191,6 +192,22 @@ export async function loadMessagesDB() {
 }*/
 
 export const recentMessagesQuery = query(collection(db, 'messages'), orderBy('timestamp', 'desc'), limit(12));
+
+// List rooms the current user belongs to
+export async function listChatRoomsDB() {
+  const current_user = await auth.currentUser;
+  let chatroom_array = Array();
+  let q = query(collection(db, "chat rooms"), where("participants", "array-contains", current_user.email));
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach((chatroom_doc) => {
+    const chatroom_doc_data = chatroom_doc.data();
+    //console.log(`${current_user.email} has rooms: ${chatroom_doc_data.room_name}`);
+    chatroom_array.push({id: chatroom_doc_data.id, room_name: chatroom_doc_data.room_name, participants: chatroom_doc_data.participants});
+  });
+  return new Promise(resolve => {
+    resolve(chatroom_array);
+  });
+}
 
 
 
